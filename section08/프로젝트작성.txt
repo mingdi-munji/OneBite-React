@@ -1,0 +1,79 @@
+### 프로젝트 준비 (터미널)
+    npm create vite@latest
+        Project name section08
+        Framework : React 
+        Variant : JavaScript + React Compiler
+        Linter : Oxlint
+
+    //섹션 이동 후 의존성 설치 / 작동확인
+    cd section08 
+    npm i
+    npm run dev
+
+    //불필요한 파일 삭제 : section08/assets의 hero.png, react.svg, vite.svg 
+    //App.jsx의 export와 App.css의 import문을 제외한 코드 삭제 + return문에 <> TodoList </>을 작성하여 작동 확인
+    //App.css 코드 전체 삭제
+    //Main.jsx에서의 Strict모드 삭제 
+
+### 기본적 세팅하기 (react 업데이트로 인한 추가적 세팅)
+    //eslint.config.js를 추가하고 아래의 내용을 추가하여 작업을 편하게 함
+        "no-unused-vars": "off", //안쓰는 변수에 대한 오류 표시에 대한 설정
+        "react/prop-types": "off", //react 안정성에 대한 설정
+    //맨 아래에 배열 추가 (rules 뒤) : Oxlint가 처리할 수 있는 규칙은 ESLint가 검사하지 않고 넘어가게 하여 성능 향상
+        oxlint.configs['flat/recommended'], // 2. 맨 마지막 배열에 추가
+    
+    //두 도구가 엮일 수 있게 package.json를 수정
+    "scripts": {
+        "lint": "oxlint && eslint"
+    }
+
+----------------
+### UI 작성
+    페이지 구조 : 헤더 (오늘날짜) / 에디터(Todolist 항목 추가) / 리스트 (list 및 검색)
+    
+    // components 폴더 생성 (Header.jsx, Editor.jsx, List.jsx )
+        //기본적 코드 구조 (ex.Header)
+        const Header = () => { return <>Header</> } 
+        export default Header;
+
+    // UI의 전체적 구조 (중앙정렬, 간격)
+        div {
+            display: flex; //유연한 배치 설정
+            flex-direction: column; //세로정렬
+            gap: 10px; //display:flex인 요소들 간의 간격 설정
+        }
+
+    //Header.css  _Header.jsx에서의 className='Header'로 변경 필요
+        .Header { color : skyblue;}  
+    
+    //Editor.css  _Editor.jsx에서 className="Editor"로 변경 필요
+        .Editor {    //상위 App.css에서 유연배치, 간격 설정 했으므로, 가로 정렬로 변경, 중간정렬만 재정의 필요
+            flex-direction: row; //가로정렬로 변경
+            justify-content: center; //중간정렬
+        }
+        .Editor input {
+            flex:1; 
+            padding : 15px; 
+            border : 1px solid rgb (220,220,220);
+            border-radius: 5px;
+        }
+
+        .Editor button {
+            cursor: pointer; //커서를 올렸을때 pointer로 변경
+            width: 80px;
+            border : none;
+            background-color : rgb(49, 152, 254);
+            border-radius : 5px;
+            color : white;
+        }
+### 세부 컴포넌트 작성
+    Header 작성 (내부) 
+        //날짜({}내부에 작성) : new Date().toDateString()
+
+    Editor 작성 
+        <input placeholder="새로운 Todo..." /> 
+        <button>추가</button>
+
+    List 작성 
+        <h4> Todo List 🌱</h4>0
+        <input placeholder="검색어를 입력하세요"></input>
