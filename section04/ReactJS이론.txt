@@ -1,0 +1,50 @@
+ReactJs : 가장 인기가 많은 프론트기술
+    1. 컴포넌트 기반 UI표현, 
+        화면의 여러 요소 (header.js, body.js, footer.js)로 페이지 구성
+    2. 화면 업데이트 구현이 쉽다.
+        선언형 프로그래밍 => 과정 생략, 목적만 간결히 명시  (반대는 명령형 프로그래밍_과정 명시)
+        컴포넌트 내의 state(상태변수)에 따라 다른 결과를 명시 => 선언형 원리 사용 가능
+        특정 변수의 값의 정의로 결과에 차이를 둘 수 있다.
+            *선언형 (react), 명령형 프로그래밍(js)
+    3. 화면 업데이트의 빠른 처리 
+        html/css 를 DOM/CSSOM (DocumentObjectModel/CSSObjectModel)로 변경 후 결합하여 청사진(RenderTree)로 구성
+        Layout으로 배치, Painting로 실제 화면에 구성
+        업데이트를 모아서 한번에 DOM수정이 일어나도록 작성 (React는 자동으로 업데이트_Virtual DOM)
+        Virtual DON에 여러 업데이트를 모아서 Actual DOM에 반영
+        
+        오래 걸리는 과정 ==> Reflow : Layout 재구성/ Repaint : Painting 과정 재구성
+
+ReactApp 생성
+1. Node.js패키지 생성
+2. React 라이브러리 설치
+3. 기타 도구 설치 및 설정  => Vite대체 (차세대 프론트엔드 개발 툴_기본설정이 된 React App생성 가능) 
+
+
+폴더 구조 
+public : 정적/ 이미지 보관 파일
+src (source) : 실제 react, js코드 보관
+    jsx : react코드 작성
+eslint.config : 개발자 사이에서의 코드 스타일 설정 (몰라도 됨)
+.gitignore : github에 올리면 안되는 파일들 명시
+index.html : 리엑트 기본 틀 역할의 html코드를 담은 파일 (js함수의 컴포넌트를 추가하는 가장 기본적인 파일)
+vite.config.js : react앱 제작 시 vite도구의 옵션을 설정하는 파일
+
+main.jsx : index.html에 동적인 요소를 추가하는 파일
+
+
+
+React 실행 
+package.json 의 scripts 내용으로 실행 가능 (npm run ____)
+    "scripts": {
+        "dev": "vite",  /*리엑트 앱을 개발용으로 실행*/
+        "build": "vite build",
+        "lint": "eslint .",
+        "preview": "vite preview"
+    }
+
+    -------------------------------------------------
+관련 명령어
+npm create vite@latest  > 설정값 : React / Js
+npm i  : npm 모듈 설치
+
+npm run dev : react app 접속 (react 내부 앱 가동 명령어)
