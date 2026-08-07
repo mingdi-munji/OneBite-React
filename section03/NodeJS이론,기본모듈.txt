@@ -1,0 +1,47 @@
+
+1. Node.js : 웹브라우저가 아닌 환경에서도 js의 코드를 실행시켜주는 js의 런타임 (실행환경)
+ *Runtime = 실행환경 = 구동기
+ => Node.js의 등장으로 js는 웹 브라우저 바깥에서도 사용가능한 범용적 언어가 되었다.
+
+2. NPM _ Node Package Manager : Node.js의 패키지(프로젝트 단위)를 관리하는 도구
+3. package : Node.js에서 사용하는 프로그램의 단위
+
+프로젝트 시작
+1. 패키지 생성(초기화) : npm init
+2. js파일 실행 : node + 실행파일이름
+  _파일의 위치가 복잡해지는 경우, package.json의 script에 "start" : "node 파일위치.js"를 기입하면 npm run start로 실행가능해진다.
+   예시 ) script {"start" : "node src/index.js" }
+
+--------------------------------------------------------------------------------------------------------------------------------------
+강의에서 다루는 모듈 시스템 : CJS (Common JS) / ESM (ES Module)
+
+CJS 에서의 방식 
+ *CJS을  사용하기 위해서는 package.json파일에 "type": "commonjs" 을 추가해줘야한다. (CJS를 사용한다는 의미)
+- export
+module.exports = {  
+  함수1:지정명1,
+  함수2, //지정명과 함수명이 같은 경우에는 생략가능
+}
+- import (2가지)
+1. const 상수명 = require("주소");   //const moduleData = require("./math");s
+2. const {지정명1,지정명2,...} = require("주소");
+
+-----------------------------------------
+ESM 에서의 방식
+ *ESM시스템을 사용하기 위해서는 package.json 파일에 "type":"module"을 추가해줘야한다. (ESM을 사용한다는 의미)
+- export (2가지)
+1. export {함수명1, 함수명2, ... }  //export {add,sub};
+2. export funtion 함수명1() {} //export function add(a,b) { return a+b; }
+
+default 함수 : ESM에서는 export default 를 함수 선언 앞에 붙여서 대표함수를 만들 수 있다.
+- export default function multiply(a,b) { return a*b; }
+- import mult from "./math.js";
+*대표함수는 중괄호 없이, 원하는 임시명칭을 통해 불러올 수 있다.
+
+- import
+import {함수명1, 함수명2, ... }  //import {add,sub} from "./math.js"
+ *ESM에서의 import는 확장자명(.js)까지 표기해줘야한다.
+
+
+*두 방식은 함께 사용할 수 없다.
+----------------------------------------------------
