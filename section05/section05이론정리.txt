@@ -1,0 +1,69 @@
+---- ch5.1-5.4 컴포넌트, jsx, css, props(컴포넌트 값) ----
+
+컴포넌트 : App.jsx (실행)에 컴포넌트를 삽입하는 형식으로 진행
+컴포넌트는 역할에 따라 분리하여 생성한다.
+    
+컴포넌트의 기본구조
+    1번 구조 _기본 함수형식
+        function Main() {
+            return (
+                <footer>
+                    <h1> footer </h1>
+                </footer>
+            )
+        }
+    2번 구조 _화살표함수 형식 
+        function Main = () => {
+            return (
+                <footer>
+                    <h1>footer</h1>
+                </footer>
+            )
+        }
+
+JSX : 자바스크립트 코드 안에 HTMl코드를 삽입할 수 있게 하는 역할 (직관적 코드 사용 가능)
+    => 컴포넌트 내에 UI요소 표현 가능 (React의 주요구조 담당/ 임포트하거나 상태를 관리)
+
+    중괄호 내부에 js식을 넣어서 jsx 내에서 랜더링 가능
+
+    주의 사항
+    1. for, if문 사용 불가능
+    2. 숫자, 문자열, 배열은 렌더링 o / 분리형 값이나 객체자체,true출력 x (오류가 발생하지도 x)
+    3. 모든 태그는 닫혀있어야한다.
+    4. 최상위 태그는 하나여야한다. return 하위의 최상위 태그 (빈태그도 가능)
+
+css 속성 관련 설정 방법
+    1. jsx내부 태그에서 직접 설정 => style = "" 사용
+        <div style = {{backgroundColor:"red"}}> </div>
+    2. 별도의 css 생성
+        css 파일 내부 : .logout { backgroundColor :"red"; color:"white"; }
+        jsx 파일 내부 : import "css파일 경로";
+                        <div className ="logout"> </div>
+
+                        class는 js의 예약어이기 때문에 className을 사용
+
+-------------------------------------------------------
+
+props _Properties : 컴퍼넌트에 전달된 값 _함수의 인수를 전달하듯 원하는 값을 전달해주는 요소들의 값
+    <Button text={"메일"} img={"mail.png"}> </Button> 
+        위의 경우에서는 text와 img가 props
+
+    props의 속성값이 지정되지않는 경우에서의 기본값 설정 => 구조분해할당
+        const Button =({text,color="black"}) => { //값들에 대한 값을 받아오면서 기본값 부여
+            return (
+                <button style={{color:color }}>
+                    {text}- {color}
+                </button>
+            )
+        };
+
+    props에서의 spread연산자 사용 가능 (일정 객체의 내부요소만 받기)
+        <Button {...buttonProps} />
+
+    html요소를 컴포넌트로 전달하는 경우, children이라는 이름으로 props를 사용 가능하다.
+        App.jsx내부 :   <Button text = {"블로그"} >
+                            <Header/>  
+                        </Button>
+        Button.jsx내부 :  const Button =({children,text,color="black"}) => {.return () }
+        
+-------------------------------------------------------
