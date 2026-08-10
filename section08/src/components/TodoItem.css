@@ -11,12 +11,11 @@
     color : gray;
     font-size : 14px ;
     border:none;
+    padding : 5px;
     border-radius: 5px;
 }
-.TodoItem .content {
-    flex : 1;
-}
 .TodoItem .date {
+    text-align: right;
     font-size: 14px;
     color : gray;
 }

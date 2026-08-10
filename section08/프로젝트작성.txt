@@ -77,3 +77,171 @@
     List 작성 
         <h4> Todo List 🌱</h4>0
         <input placeholder="검색어를 입력하세요"></input>
+
+
+------------------
+### 기능 구현 
+    기능구현 준비하기 
+        1. 새로운 Todo 추가 
+        2. 기존 Todo 삭제 
+        3. 목록에서 Todo 검색
+        ==> 화면에 즉각적인 변화반영을 위한 State 작성 필요
+            (State는 모든 컴퍼넌트에 적용되어야 하므로, 최상위 파일인 App.jsx에 배치한다.)
+
+        4. 임시데이터값 (mokData) 생성 및 준비 _ 상위파일(App.jsx에 생성)
+        const mokData = [ //임시 데이터 배열 생성
+            {
+            id:0,
+            isDone : false,
+            content : "React 공부하기",
+            date : new Date().getTime(),
+            },
+            {
+            id:1,
+            isDone : false,
+            content : "책읽기",
+            date : new Date().getTime(),
+            },
+            {
+            id:2,
+            isDone : false,
+            content : "빨래하기",
+            date : new Date().getTime(),
+            }
+        ]
+        const {toDos,setToDos} =useState([mokData]);
+            
+### Create - 투두 추가하기 
+    컴포넌트에 create 관련 함수 제작 후, 객체 변수에 매개변수를 받아온 값과 현재 시간을 넣는 방식으로 진행
+    1. useState를 사용하여 값이 React내부에서 업데이트되게 설정
+        const onCreate = () => { 
+        const newTodo = {//새로운 Todo아이템을 객체형태로 제작
+            id : 0,
+            isDone : false,
+            content : content,
+            date : new Date().getTime()
+        }
+        setToDos([newTodo,...todos])
+        }
+
+    2. 원하는 값을 얻기 위한 onCreate props를 Editor컴포넌트에게 전달
+        <Editor onCreate = {onCreate}/>
+        //Editor파일에서 props 받아오기 
+        const Editor = ({onCreate}) => {...}
+
+    Editor 에서 content에 대한 props를 받아오는 메서드/ useState, onSubmit로 값 변경에 대한 코드 작성
+        const [content,setContent] = useState ("");
+
+        const onChangeContent = (e) => {
+            setContent(e.target.value);
+        };
+        const onSubmit = () =>{
+            onCreate(content);
+        };
+        <input
+            value = {content}
+            onChange = {onChangeContent} 
+            placeholder="새로운 Todo..." /> 
+        <button onClick={onSubmit}>추가</button>
+
+    3. id값을 고유값 (겹치지않게) 설정
+        const idRef = useRef(0);
+        id :idRef.current ++,
+
+    4. 완성도를 위한 create문의 내용 추가 
+        //빈 Todo추가를 방지 (onSubmit에서 빈 문자열인 경우 강제 return;)
+        const contentRef = useRef();
+        if (!content)  {
+            contentRef.current.focus(); //빈 문자열인 경우 focus 
+            return ;
+        }
+        //내용을 추가한 이후(button클릭 후)input을 비워주는 기능
+        //onSubmit에서 content에서 작성 후 content변경기능인 setContent를 빈문자열로 설정
+        setContent("")
+
+        //enter를 누르는 경우, onSubmit 실행
+            const onKeyDown =(e) => {
+                if(e.keyCode ===13) {
+                    onSubmit();
+                }
+            }
+        //input태그 내부에 onKeyDown에 대해서 함수 설정
+            onKeyDown={onKeyDown}
+
+--------------------------------------
+### todolist 랜더링하기
+    //todos state를 props로 넘겨주기 
+        <List todos = {todos}/>
+    //list.jsx에서 props 받아오기 
+        const List = ({todos}) => {...}
+        //받아온 값을 map함수로 분리하여 content내용을 출력하기
+        <div className="todos_wrapper">
+                {todos.map((todo) => {
+                    return <div>{todo.content}</div>;
+                })}
+            </div>
+    //렌더링 컴포넌트들에 key값 (고유 구분값) 설정
+        <div className="todos_wrapper">
+            {todos.map((todo) => {
+                return <TodoItem key={todo.id} {...todo} />;
+            })}
+        </div>
+
+-----------------
+### Search 기능 설정
+    //기본적인 useState 설정하기
+        const [search,setSearch] = useState("");
+        const onChangeSearch = (e) => {
+            setSearch(e.target.value);
+        };
+        <input value= {search} onChange={setSearch}
+    //필터링에 대한 코드 작성하기 
+        const getFilteredData = () => {
+            if (!search) return todos;
+            return todos.filter((todo) => 
+                todo.content.toLowerCase().includes(search.toLowerCase()) //대소문자 구분없이 내용을 비교하도록 설정
+            );
+        };
+        const filteredTodos = getFilteredData();
+    //결과값을 UI에 렌더링하여 표시
+        <div className="todos_wrapper">
+            {filteredTodos.map((todo) => {
+                return <TodoItem key={todo.id} {...todo} />;
+            })}
+        </div>
+
+--------------------------
+### checkbox 수정 기능 설정
+    const onUpdate = (targetId) => {
+    //_todos State의 값들 중에 targetId와 일치하는 id를 갖는 투두 아이템의 isDone을 변경
+
+    //인수 : todos배열에서 targetId와 일치라는 id를 갖는 요소 데이터만 딱 바꾼 새로운 배열을 반환
+    setTodos(todos.map((todo) => {
+      //삼항 연산자로 아래와 같이 작성 가능
+      (todo.id===targetId.id)? 
+        {...todo,isDone:!todo.isDone}:todo;
+      // if(todo.id===targetId.id) {
+      //   return {
+      //     ...todo, //_todo의 내용을 펼치기 (스프레드 연산자)
+      //     isDone :!todo.isDone, //checkbox의 상태를 반대로 변경
+      //   }
+      // }
+      return todo //일치하지않는 경우 변형되지않은 todo 아이템을 반환
+    }))
+  }
+    //List 에 onUpdate =함수를 props로 전달
+        <List todos = {todos} onUpdate = {onUpdate}/>                    
+    //list에서 받아온 후, onUpdate 속성 설정
+    const List = ({todos,onUpdate}) => {...}
+    return <TodoItem key={todo.id} {...todo} onUpdate = {onUpdate} />;
+    //TodoItem에서 onUpdate받아오기
+    const TodoItem = ({id,isDone,content,date,onUpdate}) => {...}
+
+-------------------------------------
+### Delete - 투두 삭제하기
+    onDelete도 같은 방식으로 App에서 전체적인 제어에 대한 코드 작성 
+    List -> TodoItem에 props전달하면서 기능 구현
+
+    ** button은 onClick / 다른 항목들은 onChange로 조작 가능
+
+

@@ -1,5 +1,13 @@
+.List {
+    display : flex; 
+    flex-direction : column;
+    gap : 20px;
+}
+.List h4 {
+    text-align: left;
+}
 .List input {
-    width : 100%;
+    width : 1;
     border: none;
     border-bottom: 1px solid rgb(220,220,220);
     padding : 15px 0;
@@ -7,4 +15,10 @@
 .List > input:focus {
     outline :none;
     border-bottom : 2px solid rgb(137, 196, 255);
+}
+.List .todos_wrapper {
+    display :flex ;
+    flex-direction: column;
+    gap : 20px;
+    
 }
