@@ -1,28 +1,30 @@
-import { useState } from "react";
-const CurrencyInput = () => {
-    const [won,setWon] = useState(0); //won에 대한 useState 설정
-    const [dollar,setDollar] = useState(0); //dollar에 대한 useState 설정
+import {useState} from 'react';
 
-    const changeToDollar = (won) => {
-        return won/1.3;
+const CurrencyInput = () => {
+    const [won,setWon] = useState(0);
+    const [dollar,setDollar] = useState(0);
+
+    const changedWon = (e) => {
+        setDollar(e.target.value/1300);
+        setWon(e.target.value);
     }
-    const changeToWon = (dollar) => {
-        return dollar*1.3;
+    
+    const changedDollar = (e) => {
+        setDollar(e.target.value);
+        setWon(e.target.value*1300);
     }
 
     return (
         <>
+        <h1> 환율 변환기 (KRW-USD)</h1>
             <div>
-                krw:<input value={won} onChange = {(e) => {setWon(e.target.value)}}></input>
-                {won}
+            krw:<input value={won} onChange={changedWon}/>
             </div>
             <div>
-               usd: <input value={dollar} onChange = {(e) => {setDollar(e.target.value)}}></input>
+                usd:<input value = {dollar} onChange={changedDollar}/>
+                    {/* <input value={changedDollar}/> */}
             </div>
         </>
-      );
-};
-
-//input의 값을 넘겨줘야됨.
-//App에서 변형 -> Viewer로 넘겨줘야될듯
+    )
+}
 export default CurrencyInput;
